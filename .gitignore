@@ -1,0 +1,12 @@
+# ignore data files
+*.csv
+*.crc
+
+# Compiled python modules
+*.pyc
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+
+# Ipyhton / Jupyter
+.ipynb_checkpoints/
