@@ -1,13 +1,28 @@
 #!/usr/bin/env python3
 
-import socket
+import socket                   # Import socket module
 
-HOST = socket.gethostname()  # The server's hostname or IP address
-PORT = 65432        # The port used by the server
+s = socket.socket()             # Create a socket object
+host = socket.gethostname()     # Get local machine name
+port = 60387                    # Reserve a port for your service.
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b'Hello, world')
-    data = s.recv(1024)
+print(host)
 
-print('Received', repr(data))
+s.connect((host, port))
+s.send("Hello server!")
+
+with open('received_file', 'wb') as f:
+    print ('file opened')
+    while True:
+        print('receiving data...')
+        data = s.recv(1024)
+        print('data=%s', (data))
+        if not data:
+            break
+        # write data to a file
+        f.write(data)
+
+f.close()
+print('Successfully get the file')
+s.close()
+print('connection closed')

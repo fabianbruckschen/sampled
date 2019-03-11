@@ -9,7 +9,7 @@ s.bind((host, p))            # Bind to the port
 s.listen(5)                     # Now wait for client connection.
 
 
-print(gethostname())
+print(host)
 print("Server listening....")
 
 while True:
