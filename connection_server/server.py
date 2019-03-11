@@ -19,14 +19,16 @@ while True:
     print("Server received", repr(data))
 
     filename='received.txt'
-    f = open(filename,'rb')
-    l = f.read(1024)
-    while (l):
-       conn.send(l)
-       print('Sent ',repr(l))
-       l = f.read(1024)
+    f = open(filename, 'w')
+    f.write(repr(data))
+#     f = open(filename,'rb')
+#     l = f.read(1024)
+#     while (l):
+#        conn.send(l)
+#        print('Sent ',repr(l))
+#        l = f.read(1024)
     f.close()
 
-    print("Done sending")
-    conn.send("Thank you for connecting")
+    print("Done receiving")
+#     conn.send("Thank you for connecting")
     conn.close()
