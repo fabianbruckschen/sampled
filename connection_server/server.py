@@ -31,4 +31,4 @@ while True:
 
     print("Done receiving")
 #     conn.send("Thank you for connecting")
-    conn.close()
+#     conn.close()
