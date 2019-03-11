@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
-import socket                   # Import socket module
+import socket  # Import socket module
 
-p = 60387                    # Reserve a port for your service.
-s = socket.socket()             # Create a socket object
-host = socket.gethostname()     # Get local machine name
-s.bind((host, p))            # Bind to the port
-s.listen(5)                     # Now wait for client connection.
+p = 60387  # Reserve a port for your service.
+s = socket.socket()  # Create a socket object
+server = socket.gethostname()  # Get local machine name
+s.bind((server, p))  # Bind to the port
+s.listen(5)  # Now wait for client connection.
 
 
-print(host)
+print(server)
 print("Server listening....")
 
 while True:
@@ -18,7 +18,7 @@ while True:
     data = conn.recv(1024)
     print("Server received", repr(data))
 
-    filename='mytext.txt'
+    filename='received.txt'
     f = open(filename,'rb')
     l = f.read(1024)
     while (l):
