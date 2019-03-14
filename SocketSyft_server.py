@@ -4,25 +4,43 @@
 # # Checking Socket connection via pysyft module (Server)
 
 # ## Preparations
-
 # modules
 import syft as sy
-import torch
+import torch;hook = sy.TorchHook(torch)  # hook into pytorch
 import socket
 from syft.workers import WebsocketClientWorker
 from syft.workers import WebsocketServerWorker
+from multiprocessing import Process
 
-# hook into pytorch
-hook = sy.TorchHook(torch)
+# options
+hostname = socket.gethostname()
+port = 60387
 
-# define server
-server = WebsocketServerWorker(hook=hook,
-                               host=socket.gethostname(),
-                               id='server',
-                               port=60000,
-                               log_msgs=True,
-                               verbose=True)
+# server starting function
+def start_proc(participant, kwargs):  # pragma: no cover
+    """ helper function for spinning up a websocket participant """
 
-# and start it
-server.start()
+    def target():
+        server = participant(**kwargs)
+        server.start()
+
+    p = Process(target=target)
+    p.start()
+    return p
+
+# start server
+kwargs = {'id': 'server', 'host': hostname, 'port': port, 
+          'hook': hook, 'log_msgs': True, 'verbose': True}
+server = start_proc(WebsocketServerWorker, kwargs)
+
+# # define server
+# server = WebsocketServerWorker(hook=hook,
+#                                host=hostname,
+#                                id='server',
+#                                port=port,
+#                                log_msgs=True,
+#                                verbose=True)
+
+# # and start it
+# server.start()
 
