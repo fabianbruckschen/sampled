@@ -1,6 +1,7 @@
 # ignore data files
 *.csv
 *.crc
+*.pickle
 
 # Compiled python modules
 *.pyc
