@@ -16,11 +16,11 @@ while True:
     print("Got connection from", addr) 
     
     # receive data
-    msg = conn.recv(1024)
+    msg = conn.recv(pow(2,15))
     print("Server received", str(msg))
     
     # file
-    file = open(str(addr[0])+'.pickle', 'wb')
+    file = open('../data/'+str(addr[0])+'.pickle', 'wb')
     
     # dump it here (serialisierung)
     pickle.dump(msg, file)
