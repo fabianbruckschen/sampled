@@ -14,11 +14,12 @@ s.listen(2)  # Now wait for (max 2) client connections
 print('Server '+server+' listening....')
 
 while True:
-    #start timing
-    start = time.time()
-    #connection
+    # connection
     conn, addr = s.accept()  # Establish connection with client.
     print("Got connection from", addr) 
+    
+    # start timing (after 1st connection)
+    start = time.time()
     
     # receive data
     msg = conn.recv(pow(2,15))
@@ -36,11 +37,8 @@ while True:
     # close
     file.close()
     print("Done receiving")
-    
-   # conn.close()
     conn.close()
     
-   #end timing
+    # end timing
     end = time.time()
     print (end - start)
-    print("Got connection from", addr)
