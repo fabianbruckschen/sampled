@@ -1,9 +1,7 @@
 #!/usr/bin/env python3
 
-import socket  # Import socket module
-import pickle  # Import Pickle module
-import time    # Import time module
-
+import socket  # creating server client connections for efficient communication
+import pickle  # efficient file saving & loading
 
 p = 60387  # Reserve a port for your service.
 s = socket.socket()  # Create a socket object
@@ -17,9 +15,6 @@ while True:
     # connection
     conn, addr = s.accept()  # Establish connection with client.
     print("Got connection from", addr) 
-    
-    # start timing (after 1st connection)
-    start = time.time()
     
     # receive data
     msg = conn.recv(pow(2,15))
@@ -38,7 +33,3 @@ while True:
     file.close()
     print("Done receiving")
     conn.close()
-    
-    # end timing
-    end = time.time()
-    print (end - start)
