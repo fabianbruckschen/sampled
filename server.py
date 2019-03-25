@@ -10,6 +10,7 @@ s.bind((server, p))  # Bind to the port
 s.listen(2)  # Now wait for (max 2) client connections
 
 print('Server '+server+' listening....')
+known_conns = []  # ongoing list of received connections
 
 while True:
     # connection
@@ -21,14 +22,15 @@ while True:
     print("Server received", str(msg))
     
     # file
-    file = open('../data/'+str(addr[0])+'.pickle', 'wb')
-    
+    i = '1'
+    if addr[0] in known_conns:  # if we already received from this client
+        i = '2'
+        
+    file = open('data/'+str(addr[0])+'-'+i+'.pickle', 'wb')
     # dump it here (serialisierung)
     pickle.dump(msg, file)
-    
-    #NUR INFO: Daten deserialieren
-    #pickle.loads(msg)
-    
+    known_conns.append(addr[0])
+
     # close
     file.close()
     print("Done receiving")
