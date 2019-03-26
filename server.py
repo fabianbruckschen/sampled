@@ -18,8 +18,7 @@ while True:
     print("Got connection from", addr) 
     
     # receive data
-    msg = conn.recv(pow(2,25))
-    msg = pickle.loads(msg)
+    msg = conn.recv(pow(2,30))
 #     print("Server received", str(msg))
     
     # file
