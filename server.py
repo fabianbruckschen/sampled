@@ -22,14 +22,18 @@ while True:
     print("Server received", str(msg))
     
     # file
-    i = '1'
     if addr[0] in known_conns:  # if we already received from this client
-        i = '2'
+        i = '2'  # this is the second interaction
+        known_conns.remove(addr[0])  # remove the address for the next interaction
+    else:  # if this is the (again) first interaction of this client
+        i = '1'  # first interaction
+        known_conns.append(addr[0])  # add to known conns
+        
         
     file = open('data/'+str(addr[0])+'-'+i+'.pickle', 'wb')
     # dump it here (serialisierung)
     pickle.dump(msg, file)
-    known_conns.append(addr[0])
+    
 
     # close
     file.close()
