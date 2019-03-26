@@ -19,7 +19,8 @@ while True:
     
     # receive data
     msg = conn.recv(pow(2,25))
-    print("Server received", str(msg))
+    msg = pickle.loads(msg)
+#     print("Server received", str(msg))
     
     # file
     if addr[0] in known_conns:  # if we already received from this client
@@ -33,9 +34,9 @@ while True:
     file = open('data/'+str(addr[0])+'-'+i+'.pickle', 'wb')
     # dump it here (serialisierung)
     pickle.dump(msg, file)
+    file.close()
     
 
     # close
-    file.close()
     print("Done receiving")
     conn.close()
