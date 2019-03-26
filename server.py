@@ -18,7 +18,7 @@ while True:
     print("Got connection from", addr) 
     
     # receive data
-    msg = conn.recv(pow(2,15))
+    msg = conn.recv(pow(2,25))
     print("Server received", str(msg))
     
     # file
