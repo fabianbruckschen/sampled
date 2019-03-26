@@ -18,8 +18,12 @@ while True:
     print("Got connection from", addr) 
     
     # receive data
-    msg = conn.recv(pow(2,30))
-#     print("Server received", str(msg))
+    data = b''
+    while True:
+        packet = conn.recv(pow(2,12))
+        if not packet: break
+        data += packet
+    print('Server received', len(data), ' bytes')
     
     # file
     if addr[0] in known_conns:  # if we already received from this client
@@ -32,7 +36,7 @@ while True:
         
     file = open('data/'+str(addr[0])+'-'+i+'.pickle', 'wb')
     # dump it here (serialisierung)
-    pickle.dump(msg, file)
+    pickle.dump(data, file)
     file.close()
     
 
