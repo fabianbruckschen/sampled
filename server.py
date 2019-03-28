@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os  # operating system operations
 import socket  # creating server client connections for efficient communication
 import pickle  # efficient file saving & loading
 
@@ -15,30 +16,32 @@ known_conns = []  # ongoing list of received connections
 while True:
     # connection
     conn, addr = s.accept()  # Establish connection with client.
-    print("Got connection from", addr) 
-    
+    print("Got connection from", addr)
+
     # receive data
     data = b''
     while True:
-        packet = conn.recv(pow(2,12))
-        if not packet: break
+        packet = conn.recv(pow(2, 12))
+        if not packet:
+            break
         data += packet
     print('Server received', len(data), ' bytes')
-    
-    # file
+
+    # determine stage of interaction
     if addr[0] in known_conns:  # if we already received from this client
         i = '2'  # this is the second interaction
-        known_conns.remove(addr[0])  # remove the address for the next interaction
+        known_conns.remove(addr[0])  # remove address for the next interaction
     else:  # if this is the (again) first interaction of this client
         i = '1'  # first interaction
         known_conns.append(addr[0])  # add to known conns
-        
-        
+
+    # file saving
+    if not os.path.exists('data'):
+        os.makedirs('data')
     file = open('data/'+str(addr[0])+'-'+i+'.pickle', 'wb')
     # dump it here (serialisierung)
     pickle.dump(data, file)
     file.close()
-    
 
     # close
     print("Done receiving")
