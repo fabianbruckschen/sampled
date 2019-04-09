@@ -3,6 +3,7 @@
 *.crc
 *.pickle
 data/*.txt
+*.npy
 
 # Compiled python modules
 *.pyc
