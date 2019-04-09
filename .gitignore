@@ -2,7 +2,7 @@
 *.csv
 *.crc
 *.pickle
-data/*.txt
+data/power_consumption/*.txt
 *.npy
 
 # Compiled python modules
