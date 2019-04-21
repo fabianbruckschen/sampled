@@ -2,6 +2,7 @@
 *.csv
 *.crc
 *.pickle
+*.txt
 data/power_consumption/*.txt
 *.npy
 
