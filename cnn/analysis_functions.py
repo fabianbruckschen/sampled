@@ -5,6 +5,7 @@ from math import sqrt  # mathematical operations
 from sklearn.metrics import mean_squared_error  # error metrics
 from torch.utils.data import TensorDataset, DataLoader  # pytorch training
 import torch.nn.functional as F  # loss functions
+from keras.optimizers import Adam  # tensorflow optimizer
 
 
 # evaluate one or more weekly forecasts against expected values
@@ -29,11 +30,16 @@ def evaluate_forecasts(actual, predicted):
 
 # tensorflow modeling
 def train_tf_model(train_X, train_y, model,
-                   epochs, batch_size):
+                   batch_size, epochs, lr):
+    # add optimizer and loss function
+    model.compile(loss='mse', optimizer=Adam(lr=lr))
+
     # fit the model
     model.fit(train_X, train_y,
               epochs, batch_size, verbose=0)
-    return model
+
+    # return model and optimzer
+    return model, model.optimizer
 
 
 def pred_tf_model(test_X, test_y, model):
@@ -50,8 +56,7 @@ def pred_tf_model(test_X, test_y, model):
 
 # pytorch modeling
 def train_pt_model(train_X, train_y, model,
-                   batch_size, epochs, lr,
-                   n_timesteps, n_features, n_outputs):
+                   batch_size, epochs, lr):
 
     # transform data to tensors (reshape dimensions of X)
     train_X = torch.from_numpy(np.array(train_X.reshape(train_X.shape[0],
@@ -83,8 +88,8 @@ def train_pt_model(train_X, train_y, model,
 
     fit(train_Xy, epochs, model, loss_fn, opt)
 
-    # return model
-    return model
+    # return model and optimizer
+    return model, opt
 
 
 def pred_pt_model(test_X, test_y, model):
