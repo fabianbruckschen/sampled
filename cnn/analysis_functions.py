@@ -28,6 +28,41 @@ def evaluate_forecasts(actual, predicted):
     return score, scores
 
 
+# evaluate a naive pmp model
+def evaluate_model(model_func, X, y):
+    # walk-forward validation over each week
+    predictions = []
+    for i in range(len(X)):
+        # predict the week
+        yhat_sequence = model_func(X[i])
+        # store the predictions
+        predictions.append(yhat_sequence)
+    predictions = np.array(predictions)
+    # evaluate predictions days for each week
+    score, scores = evaluate_forecasts(y, predictions)
+    return score, scores, predictions
+
+
+# summarize scores per naive model type
+def summarize_scores(name, score, scores):
+    s_scores = ', '.join(['%.1f' % s for s in scores])
+    print('%s: [%.3f] %s' % (name, score, s_scores))
+
+
+# daily persistence model
+def daily_persistence(data):
+    # get the total active power for the last day
+    value = data[-1, 0]
+    # return 7 day forecast
+    return [value for _ in range(7)]
+
+
+# weekly persistence model
+def weekly_persistence(data, n_days=7):
+    # return last n_days
+    return data[-n_days:]
+
+
 # tensorflow modeling
 def train_tf_model(train_X, train_y, model,
                    batch_size, epochs, lr):
