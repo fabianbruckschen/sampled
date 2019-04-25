@@ -1,4 +1,3 @@
-# import numpy as np  # handling vectors and matrices
 import torch  # to tensor transformations
 import numpy as np  # handling vectors and matrices
 from math import sqrt  # mathematical operations
