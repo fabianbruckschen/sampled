@@ -1,13 +1,49 @@
+import numpy as np
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
+from keras.models import Sequential
+from keras.layers import Dense, Flatten
+from keras.layers.convolutional import Conv1D, MaxPooling1D
 
 
+# tensorflow
 # define univariate class
-class UNet(nn.Module):
+class TFUNET(Sequential):
     def __init__(self, n_features, n_filters,
                  n_timesteps, n_linear, n_outputs):
-        super(UNet, self).__init__()
+        super().__init__()
+        self.add(Conv1D(filters=n_filters, kernel_size=3, activation='relu',
+                        input_shape=(n_timesteps, n_features)))
+        self.add(MaxPooling1D(pool_size=2))
+        self.add(Flatten())
+        self.add(Dense(n_linear, activation='relu'))
+        self.add(Dense(n_outputs))
+
+
+# define multivariate class
+class TFMNET(Sequential):
+    def __init__(self, n_features, n_filters,
+                 n_timesteps, n_linear, n_outputs):
+        super().__init__()
+        self.add(Conv1D(filters=n_filters*2, kernel_size=3, activation='relu',
+                        input_shape=(n_timesteps, n_features)))
+        if n_timesteps >= 14:
+            self.add(Conv1D(filters=n_filters*2, kernel_size=3,
+                            activation='relu'))
+            self.add(MaxPooling1D(pool_size=2))
+        self.add(Conv1D(filters=n_filters, kernel_size=3, activation='relu'))
+        self.add(MaxPooling1D(pool_size=2))
+        self.add(Flatten())
+        self.add(Dense(n_linear*10, activation='relu'))
+        self.add(Dense(n_outputs))
+
+
+# pytorcj
+# define univariate class
+class PTUNET(nn.Module):
+    def __init__(self, n_features, n_filters,
+                 n_timesteps, n_linear, n_outputs):
+        super().__init__()
         self.n_filters = n_filters
         self.conv1 = nn.Conv1d(n_features, n_filters, 3, stride=1)
         self.aps = int(np.floor((n_timesteps-3+1)/2))
@@ -24,10 +60,10 @@ class UNet(nn.Module):
 
 
 # define multivariate class
-class MNet(nn.Module):
+class PTMNET(nn.Module):
     def __init__(self, n_features, n_filters,
                  n_timesteps, n_linear, n_outputs):
-        super(MNet, self).__init__()
+        super().__init__()
         self.n_filters = n_filters
         self.n_timesteps = n_timesteps
         self.conv1 = nn.Conv1d(n_features, n_filters*2, 3, stride=1)
