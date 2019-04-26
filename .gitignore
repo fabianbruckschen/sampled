@@ -6,6 +6,7 @@
 *.pt
 *.h5
 data/power_consumption/*.txt
+cnn/*.txt
 
 # Compiled python modules
 *.pyc
