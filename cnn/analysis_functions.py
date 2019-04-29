@@ -61,6 +61,10 @@ def weekly_persistence(data, n_days=7):
     # return last n_days
     return data[-n_days:]
 
+# week one year ago persistence model
+def yearly_persistence(data):
+	# get the data for the prior week
+	return data[:, 0]
 
 # tensorflow modeling
 def train_tf_model(train_X, train_y, model,
