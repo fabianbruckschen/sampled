@@ -5,6 +5,7 @@
 *.npy
 *.pt
 *.h5
+*.png
 data/power_consumption/*.txt
 cnn/*.txt
 
