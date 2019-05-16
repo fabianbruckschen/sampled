@@ -1,0 +1,6 @@
+matplotlib
+pandas
+pytorch
+scikit-learn
+keras
+syft
